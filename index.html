@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Echo - Share ideas. Build conversations. A modern social platform for developers.">
+  <meta name="theme-color" content="#1d9bf0">
+  <title>Home / Echo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-layout" id="app">
+    <!-- Left Sidebar -->
+    <nav class="sidebar-left" aria-label="Primary Navigation">
+      <div class="sidebar-inner">
+        <a href="index.html" class="logo-link" aria-label="Echo Home">
+          <div class="logo-mark" aria-hidden="true">E</div>
+        </a>
+        <ul class="nav-list" role="list">
+          <li>
+            <a href="index.html" class="nav-link active" aria-current="page">
+              <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+              <span>Home</span>
+            </a>
+          </li>
+          <li>
+            <a href="#explore" class="nav-link">
+              <i class="bi bi-hash" aria-hidden="true"></i>
+              <span>Explore</span>
+            </a>
+          </li>
+          <li>
+            <a href="#notifications" class="nav-link">
+              <i class="bi bi-bell" aria-hidden="true"></i>
+              <span>Notifications</span>
+            </a>
+          </li>
+          <li>
+            <a href="#messages" class="nav-link">
+              <i class="bi bi-envelope" aria-hidden="true"></i>
+              <span>Messages</span>
+            </a>
+          </li>
+          <li>
+            <a href="#bookmarks" class="nav-link">
+              <i class="bi bi-bookmark" aria-hidden="true"></i>
+              <span>Bookmarks</span>
+            </a>
+          </li>
+          <li>
+            <a href="#profile" class="nav-link">
+              <i class="bi bi-person" aria-hidden="true"></i>
+              <span>Profile</span>
+            </a>
+          </li>
+        </ul>
+        <button type="button" class="btn-tweet" id="btn-sidebar-tweet" aria-label="Compose new tweet">
+          <span class="btn-text">Tweet</span>
+          <i class="bi bi-pencil-fill btn-icon" aria-hidden="true"></i>
+        </button>
+        <div class="profile-summary">
+          <div class="avatar avatar-md" aria-hidden="true">M</div>
+          <div class="profile-info">
+            <p class="profile-name">Mahlatse</p>
+            <p class="profile-handle">@mahlatse_dev</p>
+            <p class="profile-role">Frontend Developer</p>
+          </div>
+          <a href="login.html" class="login-link">Login</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header class="main-header">
+        <h1>Home</h1>
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+          <i class="bi bi-moon-fill" aria-hidden="true"></i>
+        </button>
+      </header>
+      
+      <!-- Composer -->
+      <section class="composer" aria-label="Compose new tweet">
+        <div class="composer-body">
+          <div class="avatar avatar-sm" aria-hidden="true">M</div>
+          <div class="composer-input-area">
+            <label for="tweet-input" class="visually-hidden">What's happening?</label>
+            <textarea id="tweet-input" class="tweet-textarea" placeholder="What's happening?" rows="2" maxlength="280" aria-describedby="composer-counter"></textarea>
+            <div class="composer-actions">
+              <div class="media-icons" aria-label="Add media">
+                <button type="button" class="icon-btn" aria-label="Add image" title="Image"><i class="bi bi-image" aria-hidden="true"></i></button>
+                <button type="button" class="icon-btn" aria-label="Add GIF" title="GIF"><i class="bi bi-filetype-gif" aria-hidden="true"></i></button>
+                <button type="button" class="icon-btn" aria-label="Add poll" title="Poll"><i class="bi bi-bar-chart" aria-hidden="true"></i></button>
+                <button type="button" class="icon-btn" aria-label="Add emoji" title="Emoji"><i class="bi bi-emoji-smile" aria-hidden="true"></i></button>
+              </div>
+              <div class="composer-submit-area">
+                <span id="composer-counter" class="char-counter" aria-live="polite">0/280</span>
+                <button type="button" class="btn-tweet btn-small" id="composer-submit" disabled>Tweet</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Feed -->
+      <div class="feed-wrapper">
+        <div class="skeleton-loader" id="skeleton-loader" aria-hidden="true" aria-label="Loading tweets">
+          <div class="skeleton-card">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-content">
+              <div class="skeleton-line short"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-content">
+              <div class="skeleton-line short"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+            </div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-avatar"></div>
+            <div class="skeleton-content">
+              <div class="skeleton-line short"></div>
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line"></div>
+            </div>
+          </div>
+        </div>
+        <div class="tweet-feed" id="tweet-feed" role="feed" aria-busy="true" aria-label="Tweet timeline">
+          <!-- Tweets injected by JS -->
+        </div>
+        <div class="empty-state" id="empty-state" hidden>
+          <i class="bi bi-chat-square-text" aria-hidden="true"></i>
+          <p>No tweets found matching your search.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="sidebar-right" aria-label="Secondary">
+      <div class="search-box">
+        <label for="search-input" class="visually-hidden">Search Echo</label>
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input type="text" id="search-input" class="search-input" placeholder="Search Echo" autocomplete="off" aria-controls="search-suggestions">
+        <div class="search-suggestions" id="search-suggestions" hidden>
+          <div class="suggestion-group">
+            <h3>Recent</h3>
+            <ul role="list">
+              <li><a href="#">JavaScript</a></li>
+              <li><a href="#">Accessibility</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      
+      <section class="card trend-card" aria-labelledby="trends-heading">
+        <h2 id="trends-heading" class="card-title">Trends for you</h2>
+        <ul class="trend-list" role="list">
+          <li>
+            <a href="#">
+              <span class="trend-category">Technology · Trending</span>
+              <span class="trend-topic">JavaScript</span>
+              <span class="trend-posts">12.5K posts</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="trend-category">Technology · Trending</span>
+              <span class="trend-topic">CSS</span>
+              <span class="trend-posts">8.2K posts</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="trend-category">Technology · Trending</span>
+              <span class="trend-topic">Artificial Intelligence</span>
+              <span class="trend-posts">45.1K posts</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="trend-category">Technology · Trending</span>
+              <span class="trend-topic">South African Tech</span>
+              <span class="trend-posts">3.4K posts</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="trend-category">Technology · Trending</span>
+              <span class="trend-topic">Frontend</span>
+              <span class="trend-posts">6.7K posts</span>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section class="card stats-card" aria-labelledby="stats-heading">
+        <h2 id="stats-heading" class="card-title">Developer Stats</h2>
+        <dl class="stats-list">
+          <div class="stat-item">
+            <dt>Projects</dt>
+            <dd>12</dd>
+          </div>
+          <div class="stat-item">
+            <dt>Current Stack</dt>
+            <dd>HTML, CSS, JS</dd>
+          </div>
+          <div class="stat-item">
+            <dt>Coffee Today</dt>
+            <dd>3 cups</dd>
+          </div>
+        </dl>
+      </section>
+    </aside>
+  </div>
+
+  <!-- Mobile Bottom Nav -->
+  <nav class="mobile-nav" aria-label="Mobile Navigation">
+    <a href="index.html" class="mobile-nav-link active" aria-current="page">
+      <i class="bi bi-house-door-fill" aria-hidden="true"></i>
+      <span class="visually-hidden">Home</span>
+    </a>
+    <a href="#explore" class="mobile-nav-link">
+      <i class="bi bi-hash" aria-hidden="true"></i>
+      <span class="visually-hidden">Explore</span>
+    </a>
+    <a href="#notifications" class="mobile-nav-link">
+      <i class="bi bi-bell" aria-hidden="true"></i>
+      <span class="visually-hidden">Notifications</span>
+    </a>
+    <a href="#messages" class="mobile-nav-link">
+      <i class="bi bi-envelope" aria-hidden="true"></i>
+      <span class="visually-hidden">Messages</span>
+    </a>
+    <a href="#profile" class="mobile-nav-link">
+      <i class="bi bi-person" aria-hidden="true"></i>
+      <span class="visually-hidden">Profile</span>
+    </a>
+  </nav>
+
+  <!-- Mobile Tweet FAB -->
+  <button type="button" class="fab-tweet" id="btn-fab-tweet" aria-label="Compose new tweet">
+    <i class="bi bi-pencil-fill" aria-hidden="true"></i>
+  </button>
+
+  <!-- Tweet Modal -->
+  <div class="modal" id="tweet-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-content">
+      <h2 id="modal-title" class="visually-hidden">Compose new tweet</h2>
+      <div class="modal-header">
+        <button type="button" class="modal-close" data-close-modal aria-label="Close dialog">
+          <i class="bi bi-x-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="avatar avatar-sm" aria-hidden="true">M</div>
+        <div class="modal-input-area">
+          <label for="modal-tweet-input" class="visually-hidden">What's happening?</label>
+          <textarea id="modal-tweet-input" class="tweet-textarea" placeholder="What's happening?" rows="3" maxlength="280" aria-describedby="modal-counter"></textarea>
+          <div class="modal-actions">
+            <div class="media-icons">
+              <button type="button" class="icon-btn" aria-label="Add image"><i class="bi bi-image" aria-hidden="true"></i></button>
+              <button type="button" class="icon-btn" aria-label="Add GIF"><i class="bi bi-filetype-gif" aria-hidden="true"></i></button>
+              <button type="button" class="icon-btn" aria-label="Add poll"><i class="bi bi-bar-chart" aria-hidden="true"></i></button>
+              <button type="button" class="icon-btn" aria-label="Add emoji"><i class="bi bi-emoji-smile" aria-hidden="true"></i></button>
+            </div>
+            <div class="modal-submit-area">
+              <span id="modal-counter" class="char-counter" aria-live="polite">0/280</span>
+              <button type="button" class="btn-tweet btn-small" id="modal-submit" disabled>Tweet</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/darkmode.js"></script>
+  <script src="js/main.js" type="module"></script>
+</body>
+</html>
