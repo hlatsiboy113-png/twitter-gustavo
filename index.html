@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="Echo - Share ideas. Build conversations. A Twitter-inspired social platform for developers.">
+  <meta name="theme-color" content="#1a7a5e">
+  <title>Echo / Home</title>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container" role="status" aria-live="polite" aria-atomic="true"></div>
+  
+  <!-- Tweet Modal -->
+  <div class="modal-backdrop" id="tweet-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="tweet-modal-title" tabindex="-1">
+    <div class="modal" id="tweet-modal">
+      <div class="modal__header">
+        <button class="modal__close" id="tweet-modal-close" aria-label="Close tweet composer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+        <span id="tweet-modal-title" class="sr-only">Compose new tweet</span>
+      </div>
+      <div class="modal__body">
+        <div class="composer" style="border: none;">
+          <div class="composer__avatar" role="img" aria-label="Mahlatse's avatar"></div>
+          <div class="composer__body">
+            <textarea 
+              class="composer__textarea" 
+              id="modal-tweet-input" 
+              placeholder="What's happening?" 
+              maxlength="280" 
+              aria-label="Tweet text"
+              rows="4"
+            ></textarea>
+            <div class="composer__actions" style="border-top: 1px solid var(--border-color); margin-top: var(--space-3);">
+              <div class="composer__tools">
+                <button class="composer__tool" aria-label="Add media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></button>
+                <button class="composer__tool" aria-label="Add GIF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><text x="4" y="18" font-size="14" font-weight="bold" fill="currentColor" stroke="none">GIF</text></svg></button>
+                <button class="composer__tool" aria-label="Add poll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></button>
+                <button class="composer__tool" aria-label="Add emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg></button>
+              </div>
+              <div class="composer__right">
+                <span class="composer__counter" id="modal-char-counter">280</span>
+                <button class="composer__btn" id="modal-tweet-btn" disabled aria-label="Post tweet">Tweet</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Login Modal -->
+  <div class="modal-backdrop" id="login-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="login-modal-title" tabindex="-1">
+    <div class="modal" style="max-width: 440px;">
+      <div class="modal__header">
+        <div style="display: flex; align-items: center; gap: var(--space-3);">
+          <svg class="logo__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 28px; height: 28px;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path><path d="M8 12l2 2 4-4"></path></svg>
+          <span id="login-modal-title" style="font-weight: var(--font-bold); font-size: var(--text-lg); color: var(--text-primary);">Sign in to Echo</span>
+        </div>
+        <button class="modal__close" id="login-modal-close" aria-label="Close login dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+      <div class="modal__body" style="padding: var(--space-6);">
+        <form class="login-form" id="login-modal-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="login-modal-email">Email address</label>
+            <div class="form-input-wrapper">
+              <input 
+                type="email" 
+                id="login-modal-email" 
+                class="form-input" 
+                placeholder="you@example.com" 
+                autocomplete="email"
+                aria-describedby="login-modal-email-error"
+                required
+              >
+            </div>
+            <div class="form-error" id="login-modal-email-error" role="alert" aria-live="assertive" style="display: none;">
+              <svg class="form-error__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Please enter a valid email address</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="login-modal-password">Password</label>
+            <div class="form-input-wrapper">
+              <input 
+                type="password" 
+                id="login-modal-password" 
+                class="form-input" 
+                placeholder="Enter your password" 
+                autocomplete="current-password"
+                aria-describedby="login-modal-password-error"
+                required
+                minlength="6"
+              >
+              <button type="button" class="form-input__icon" id="login-modal-toggle-password" aria-label="Toggle password visibility" tabindex="-1">
+                <svg id="login-modal-eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+            <div class="form-error" id="login-modal-password-error" role="alert" aria-live="assertive" style="display: none;">
+              <svg class="form-error__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Password must be at least 6 characters</span>
+            </div>
+          </div>
+          <div class="form-options">
+            <label class="form-checkbox-wrapper">
+              <input type="checkbox" class="form-checkbox" id="login-modal-remember" aria-label="Remember me">
+              <span class="form-checkbox-label">Remember me</span>
+            </label>
+            <a href="#" class="form-link">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn-login" id="login-modal-submit">
+            <span>Sign In</span>
+          </button>
+        </form>
+        <div class="login-divider">or</div>
+        <div class="login-footer">
+          Don't have an account? <a href="#">Sign up</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="app-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar-left" role="navigation" aria-label="Main navigation">
+      <div class="sidebar-left__top">
+        <a href="index.html" class="logo" aria-label="Echo home">
+          <svg class="logo__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"></path>
+            <path d="M8 12l2 2 4-4"></path>
+          </svg>
+          <span class="logo__text">Echo</span>
+        </a>
+        
+        <nav class="nav" role="tablist" aria-label="Navigation tabs">
+          <a href="index.html" class="nav__item nav__item--active" role="tab" aria-selected="true" aria-label="Home timeline">
+            <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span class="nav__label">Home</span>
+          </a>
+          <a href="#" class="nav__item" role="tab" aria-selected="false" aria-label="Explore trending topics">
+            <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span class="nav__label">Explore</span>
+          </a>
+          <a href="#" class="nav__item" role="tab" aria-selected="false" aria-label="Notifications">
+            <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+            <span class="nav__label">Notifications</span>
+            <span class="nav__badge" aria-label="3 unread notifications">3</span>
+          </a>
+          <a href="#" class="nav__item" role="tab" aria-selected="false" aria-label="Messages">
+            <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <span class="nav__label">Messages</span>
+          </a>
+          <a href="#" class="nav__item" role="tab" aria-selected="false" aria-label="Bookmarks">
+            <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+            <span class="nav__label">Bookmarks</span>
+          </a>
+          <a href="#" class="nav__item" role="tab" aria-selected="false" aria-label="Profile">
+            <svg class="nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span class="nav__label">Profile</span>
+          </a>
+          <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" aria-pressed="false">
+            <svg class="theme-toggle__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <span class="theme-toggle__label">Theme</span>
+            <span class="theme-toggle__switch" aria-hidden="true"></span>
+          </button>
+        </nav>
+        
+        <button class="btn-tweet" id="sidebar-tweet-btn" aria-label="Compose new tweet">
+          <span>Tweet</span>
+          <svg style="display: none;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+      </div>
+      
+      <div class="profile-summary" role="button" tabindex="0" aria-label="Open profile menu for Mahlatse">
+        <div class="profile-summary__avatar" role="img" aria-label="Mahlatse's avatar"></div>
+        <div class="profile-summary__info">
+          <span class="profile-summary__name">Mahlatse</span>
+          <span class="profile-summary__handle">@mahlatse_dev</span>
+        </div>
+        <svg class="profile-summary__menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+      </div>
+    </aside>
+    
+    <!-- MAIN CONTENT -->
+    <main class="main-feed" id="main-content">
+      <header class="feed-header">
+        <h1 class="feed-header__title">Home</h1>
+        <div class="feed-tabs" role="tablist" aria-label="Feed tabs">
+          <button class="feed-tab feed-tab--active" role="tab" aria-selected="true" id="tab-for-you">For you</button>
+          <button class="feed-tab" role="tab" aria-selected="false" id="tab-following">Following</button>
+        </div>
+      </header>
+      
+      <!-- Tweet Composer -->
+      <div class="composer" role="form" aria-label="Compose tweet">
+        <div class="composer__avatar" role="img" aria-label="Mahlatse's avatar"></div>
+        <div class="composer__body">
+          <textarea 
+            class="composer__textarea" 
+            id="tweet-input" 
+            placeholder="What's happening?" 
+            maxlength="280" 
+            aria-label="Tweet text"
+            rows="2"
+          ></textarea>
+          <div class="composer__actions">
+            <div class="composer__tools">
+              <button class="composer__tool" aria-label="Add media"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg></button>
+              <button class="composer__tool" aria-label="Add GIF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><text x="4" y="18" font-size="14" font-weight="bold" fill="currentColor" stroke="none">GIF</text></svg></button>
+              <button class="composer__tool" aria-label="Add poll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></button>
+              <button class="composer__tool" aria-label="Add emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg></button>
+            </div>
+            <div class="composer__right">
+              <span class="composer__counter" id="char-counter">280</span>
+              <button class="composer__btn" id="tweet-btn" disabled aria-label="Post tweet">Tweet</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Skeleton Loading -->
+      <div id="skeleton-feed" aria-hidden="true">
+        <div class="skeleton-tweet">
+          <div class="skeleton skeleton-tweet__avatar"></div>
+          <div class="skeleton-tweet__body">
+            <div class="skeleton skeleton-tweet__line skeleton-tweet__line--short"></div>
+            <div class="skeleton skeleton-tweet__line skeleton-tweet__line--long"></div>
+            <div class="skeleton skeleton-tweet__line skeleton-tweet__line--medium"></div>
+          </div>
+        </div>
+        <div class="skeleton-tweet">
+          <div class="skeleton skeleton-tweet__avatar"></div>
+          <div class="skeleton-tweet__body">
+            <div class="skeleton skeleton-tweet__line skeleton-tweet__line--short"></div>
+            <div class="skeleton skeleton-tweet__line skeleton-tweet__line--long"></div>
+            <div class="skeleton skeleton-tweet__line skeleton-tweet__line--medium"></div>
+          </div>
+        </div>
+        <div class="skeleton-tweet">
+          <div class="skeleton skeleton-tweet__avatar"></div>
+          <div class="skeleton-tweet__body">
+            <div class="skeleton skeleton-tweet__line skeleton-tweet__line--short"></div>
+            <div class="skeleton skeleton-tweet__line skeleton-tweet__line--long"></div>
+            <div class="skeleton skeleton-tweet__line skeleton-tweet__line--medium"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tweet Feed -->
+      <div id="tweet-feed" role="feed" aria-label="Tweet timeline" aria-busy="false" style="display: none;"></div>
+    </main>
+    
+    <!-- RIGHT SIDEBAR -->
+    <aside class="sidebar-right" aria-label="Trending and suggestions">
+      <!-- Search -->
+      <div class="search">
+        <div class="search__input-wrapper">
+          <svg class="search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input 
+            type="text" 
+            class="search__input" 
+            id="search-input" 
+            placeholder="Search Echo" 
+            aria-label="Search"
+            autocomplete="off"
+          >
+        </div>
+        <div class="search__suggestions" id="search-suggestions" role="listbox" aria-label="Search suggestions">
+          <div class="search__suggestion-item" role="option" tabindex="0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>JavaScript</span>
+          </div>
+          <div class="search__suggestion-item" role="option" tabindex="0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>CSS Grid</span>
+          </div>
+          <div class="search__suggestion-item" role="option" tabindex="0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Accessibility</span>
+          </div>
+          <div class="search__suggestion-item" role="option" tabindex="0">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <span>Frontend</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Trending -->
+      <div class="widget">
+        <h2 class="widget__header">Trending for you</h2>
+        <div class="widget__item" tabindex="0" role="button">
+          <span class="widget__category">Technology · Trending</span>
+          <span class="widget__title">JavaScript</span>
+          <span class="widget__meta">52.4K posts</span>
+        </div>
+        <div class="widget__item" tabindex="0" role="button">
+          <span class="widget__category">Technology · Trending</span>
+          <span class="widget__title">CSS</span>
+          <span class="widget__meta">38.2K posts</span>
+        </div>
+        <div class="widget__item" tabindex="0" role="button">
+          <span class="widget__category">Technology · Trending</span>
+          <span class="widget__title">Artificial Intelligence</span>
+          <span class="widget__meta">124.7K posts</span>
+        </div>
+        <div class="widget__item" tabindex="0" role="button">
+          <span class="widget__category">Local · Trending</span>
+          <span class="widget__title">South African Tech</span>
+          <span class="widget__meta">8.9K posts</span>
+        </div>
+        <div class="widget__item" tabindex="0" role="button">
+          <span class="widget__category">Technology · Trending</span>
+          <span class="widget__title">Frontend</span>
+          <span class="widget__meta">45.1K posts</span>
+        </div>
+        <button class="widget__footer">Show more</button>
+      </div>
+      
+      <!-- Developer Stats -->
+      <div class="widget">
+        <h2 class="widget__header">Developer Stats</h2>
+        <div class="dev-stats">
+          <div class="dev-stat">
+            <span class="dev-stat__label">Projects</span>
+            <span class="dev-stat__value">12</span>
+          </div>
+          <div class="dev-stat">
+            <span class="dev-stat__label">Current Stack</span>
+            <span class="dev-stat__value">HTML/CSS/JS</span>
+          </div>
+          <div class="dev-stat">
+            <span class="dev-stat__label">Coffee Today</span>
+            <span class="dev-stat__value">3 cups</span>
+          </div>
+          <div class="dev-stat">
+            <span class="dev-stat__label">Bugs Fixed</span>
+            <span class="dev-stat__value">47</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Who to Follow -->
+      <div class="widget">
+        <h2 class="widget__header">Who to follow</h2>
+        <div class="follow-item" tabindex="0" role="button">
+          <div class="follow-item__avatar" role="img" aria-label="Sarah's avatar"></div>
+          <div class="follow-item__info">
+            <span class="follow-item__name">Sarah Chen</span>
+            <span class="follow-item__handle">@sarahcodes</span>
+          </div>
+          <button class="follow-item__btn" aria-label="Follow Sarah Chen"><span class="follow-text">Follow</span></button>
+        </div>
+        <div class="follow-item" tabindex="0" role="button">
+          <div class="follow-item__avatar" role="img" aria-label="James's avatar"></div>
+          <div class="follow-item__info">
+            <span class="follow-item__name">James Okafor</span>
+            <span class="follow-item__handle">@jamesdev</span>
+          </div>
+          <button class="follow-item__btn" aria-label="Follow James Okafor"><span class="follow-text">Follow</span></button>
+        </div>
+        <div class="follow-item" tabindex="0" role="button">
+          <div class="follow-item__avatar" role="img" aria-label="Priya's avatar"></div>
+          <div class="follow-item__info">
+            <span class="follow-item__name">Priya Sharma</span>
+            <span class="follow-item__handle">@priyadesigns</span>
+          </div>
+          <button class="follow-item__btn" aria-label="Follow Priya Sharma"><span class="follow-text">Follow</span></button>
+        </div>
+        <button class="widget__footer">Show more</button>
+      </div>
+    </aside>
+  </div>
+  
+  <!-- Mobile FAB -->
+  <button class="fab" id="mobile-fab" aria-label="Compose new tweet">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+  </button>
+  
+  <!-- Mobile Bottom Nav -->
+  <nav class="bottom-nav" role="navigation" aria-label="Mobile navigation">
+    <a href="index.html" class="bottom-nav__item bottom-nav__item--active" aria-label="Home">
+      <svg class="bottom-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+    </a>
+    <a href="#" class="bottom-nav__item" aria-label="Search">
+      <svg class="bottom-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    </a>
+    <a href="#" class="bottom-nav__item" aria-label="Notifications">
+      <svg class="bottom-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+      <span class="bottom-nav__badge">3</span>
+    </a>
+    <a href="#" class="bottom-nav__item" aria-label="Messages">
+      <svg class="bottom-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+    </a>
+  </nav>
+  
+  <script src="js/darkMode.js"></script>
+  <script src="js/modal.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
